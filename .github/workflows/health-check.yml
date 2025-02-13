@@ -1,0 +1,30 @@
+name: Daily Health Check
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # Runs daily at 2:00 AM UTC (adjust as needed)
+  workflow_dispatch:    # Allows manual triggering via the GitHub Actions UI
+
+jobs:
+  health-check:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Execute all scripts in the scripts directory
+        run: |
+          SCRIPT_DIR="./scripts"
+          if [ -d "$SCRIPT_DIR" ]; then
+            for script in "$SCRIPT_DIR"/*; do
+              if [ -f "$script" ]; then
+                echo "Ensuring $script is executable"
+                chmod +x "$script"
+                echo "Running $script..."
+                "$script"
+              fi
+            done
+          else
+            echo "Directory '$SCRIPT_DIR' does not exist."
+            exit 1
+          fi
