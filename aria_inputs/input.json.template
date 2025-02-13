@@ -1,0 +1,9 @@
+{
+  "catalogItemId": "ExampleCatalogItem",
+  "catalogItemInputs": {
+    "inputParameter1": "value1",
+    "inputParameter2": "value2"
+  },
+  "projectId": "example-project-id",
+  "catalogVersion": "v1.0"
+}
