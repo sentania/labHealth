@@ -8,6 +8,10 @@ on:
 jobs:
   health-check:
     runs-on: self-hosted
+    env:
+      ARIA_AUTOMATION_USERNAME: ${{ secrets.ARIA_AUTOMATION_USERNAME }}
+      ARIA_AUTOMATION_PASSWORD: ${{ secrets.ARIA_AUTOMATION_PASSWORD }}
+      ARIA_AUTOMATION_HOST: ${{ secrets.ARIA_AUTOMATION_HOST }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
