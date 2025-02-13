@@ -9,9 +9,9 @@ jobs:
   health-check:
     runs-on: self-hosted
     env:
-      ARIA_AUTOMATION_USERNAME: ${{ variables.ARIA_AUTOMATION_USERNAME }}
+      ARIA_AUTOMATION_USERNAME: ${{ vars.ARIA_AUTOMATION_USERNAME }}
       ARIA_AUTOMATION_PASSWORD: ${{ secrets.ARIA_AUTOMATION_PASSWORD }}
-      ARIA_AUTOMATION_HOST: ${{ variables.ARIA_AUTOMATION_HOST }}
+      ARIA_AUTOMATION_HOST: ${{ vars.ARIA_AUTOMATION_HOST }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
