@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      - name: Make support scripts executable
+        run: chmod +x ./support_scripts/*.sh
       - name: Execute all scripts in the scripts directory
         run: |
           SCRIPT_DIR="./scripts"
