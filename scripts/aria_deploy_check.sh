@@ -75,12 +75,14 @@ for input_file in "$INPUT_DIR"/*.json; do
   catalogItemInputs=$(jq -c '.catalogItemInputs' "$input_file")
   projectId=$(jq -r '.projectId' "$input_file")
   catalogVersion=$(jq -r '.catalogVersion' "$input_file")
+  bpName=$(jq -r '.bpName' "$input_file")
 
   # Calculate a deployment name: replace spaces with underscores and append the date.
-  deploymentName="${catalogItemId// /_}_$(date +'%Y%m%d')"
+  deploymentName="${bpName}-$(date +'%Y%m%d')"
   
   # Create a reason string.
   reason="Daily Check ${CURRENT_DATE}"
+
 
   echo "Deploying catalog item: ${catalogItemId}"
   echo "Deployment Name: ${deploymentName}"

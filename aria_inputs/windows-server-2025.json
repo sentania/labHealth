@@ -1,7 +1,7 @@
 {
+  "bpName": "Windows 2025",
   "catalogItemId": "b771efae-5ecb-3760-a934-38d687a7e4c8",
   "catalogItemInputs": {
-    "Deployment Name": "Daily Check"
   },
   "projectId": "eac08244-dce0-420b-b4cc-3faf5e51756e",
   "catalogVersion": "1"
