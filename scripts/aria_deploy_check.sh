@@ -107,7 +107,7 @@ for input_file in "$INPUT_DIR"/*.json; do
   )
 
   # Submit the catalog request using the bearer token for authentication.
-  response=$(curl -s -w "\n%{http_code}" -X POST "${ARIA_AUTOMATION_URL}/catalog/api/items/${catalogItemId}/request" \
+  response=$(curl -s -k -w "\n%{http_code}" -X POST "${ARIA_AUTOMATION_URL}/catalog/api/items/${catalogItemId}/request" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer ${BEARER_TOKEN}" \
     -d "$payload"
