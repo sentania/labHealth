@@ -36,13 +36,13 @@ echo "Refresh token obtained."
 
 echo "Obtaining bearer token using the refresh token..."
 # Based on Broadcom's Knowledge article 346005, the correct endpoint for generating the bearer token is:
-#   /csp/gateway/am/api/identity/refresh
+#  /iaas/api/login
 # and the response JSON contains the property "bearerToken".
-bearer_response=$(curl -s -k -X POST "${ARIA_AUTOMATION_URL}/csp/gateway/am/api/identity/refresh" \
+bearer_response=$(curl -s -k -X POST "${ARIA_AUTOMATION_URL}/iaas/api/login" \
   -H "Content-Type: application/json" \
-  -d "{\"refresh_token\": \"$REFRESH_TOKEN\"}")
+  -d "{\"refreshToken\": \"$REFRESH_TOKEN\"}")
 
-BEARER_TOKEN=$(echo "$bearer_response" | jq -r '.bearerToken')
+BEARER_TOKEN=$(echo "$bearer_response" | jq -r '.token')
 
 if [[ -z "$BEARER_TOKEN" || "$BEARER_TOKEN" == "null" ]]; then
   echo "Failed to obtain bearer token. Response:"
