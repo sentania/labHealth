@@ -78,7 +78,7 @@ for input_file in "$INPUT_DIR"/*.json; do
   bpName=$(jq -r '.bpName' "$input_file")
 
   # Calculate a deployment name using bpName and current date.
-  deploymentName="${bpName}-$(date +'%Y%m%d')"
+  deploymentName="${bpName}-$(date +'%Y-%m-%d:%H:%M:%S')"
   
   # Create a reason string.
   reason="Daily Check ${CURRENT_DATE}"
