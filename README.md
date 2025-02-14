@@ -58,7 +58,7 @@ Below is the recommended folder structure for the project:
    ${ARIA_AUTOMATION_URL}/catalog/api/items/${catalogItemId}/request
 ```
 
-3; **Monitoring Deployment Status**
+3. **Monitoring Deployment Status**
     After triggering a deployment, the script extracts the deploymentId from the response and polls the deployment status at:
 
 ```bash

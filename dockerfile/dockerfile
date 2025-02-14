@@ -1,0 +1,31 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    jq \
+    git \
+    libicu70 \
+    libkrb5-3 \
+    libssl3 \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG RUNNER_UID=999
+RUN useradd -m -u ${RUNNER_UID} runner
+
+WORKDIR /home/runner
+
+ENV RUNNER_VERSION=2.300.0
+
+RUN curl -L -O https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+    && tar xzf actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+    && rm actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+
+# Copy the entrypoint script to /opt so it won’t be overridden by the volume mount
+COPY --chmod=0755 entrypoint.sh /opt/entrypoint.sh
+
+USER runner
+
+# Set the entrypoint from the /opt directory
+ENTRYPOINT ["/opt/entrypoint.sh"]

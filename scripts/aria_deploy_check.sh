@@ -131,7 +131,7 @@ for input_file in "$INPUT_DIR"/*.json; do
     # -----------------------------------------------------------------------------
     # Poll the deployment status every 90 seconds for up to 15 minutes (10 attempts).
     attempt=0
-    max_attempts=10
+    max_attempts=20
     while [ $attempt -lt $max_attempts ]; do
       status_response=$(curl -s -k -H "Content-Type: application/json" \
         -H "Authorization: Bearer ${BEARER_TOKEN}" \
