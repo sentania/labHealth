@@ -37,7 +37,7 @@ echo "Refresh token obtained."
 echo "Obtaining bearer token using the refresh token..."
 # Based on Broadcom's Knowledge article 346005, the correct endpoint for generating the bearer token is:
 #  /iaas/api/login
-# and the response JSON contains the property "bearerToken".
+# and the response JSON contains the property "token".
 bearer_response=$(curl -s -k -X POST "${ARIA_AUTOMATION_URL}/iaas/api/login" \
   -H "Content-Type: application/json" \
   -d "{\"refreshToken\": \"$REFRESH_TOKEN\"}")
@@ -77,12 +77,11 @@ for input_file in "$INPUT_DIR"/*.json; do
   catalogVersion=$(jq -r '.catalogVersion' "$input_file")
   bpName=$(jq -r '.bpName' "$input_file")
 
-  # Calculate a deployment name: replace spaces with underscores and append the date.
+  # Calculate a deployment name using bpName and current date.
   deploymentName="${bpName}-$(date +'%Y%m%d')"
   
   # Create a reason string.
   reason="Daily Check ${CURRENT_DATE}"
-
 
   echo "Deploying catalog item: ${catalogItemId}"
   echo "Deployment Name: ${deploymentName}"
@@ -106,7 +105,7 @@ for input_file in "$INPUT_DIR"/*.json; do
      }'
   )
 
-  # Submit the catalog request using the bearer token for authentication.
+  # Trigger the catalog request using the bearer token for authentication.
   response=$(curl -s -k -w "\n%{http_code}" -X POST "${ARIA_AUTOMATION_URL}/catalog/api/items/${catalogItemId}/request" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer ${BEARER_TOKEN}" \
@@ -123,7 +122,42 @@ for input_file in "$INPUT_DIR"/*.json; do
     exit 1
   else
     echo "Successfully deployed catalog item '${catalogItemId}'."
+    # Extract deploymentId from the returned JSON array.
+    deploymentId=$(echo "$body" | jq -r '.[0].deploymentId')
+    echo "Deployment ID: $deploymentId"
+    
+    # -----------------------------------------------------------------------------
+    # 4. Polling Deployment Status
+    # -----------------------------------------------------------------------------
+    # Poll the deployment status every 90 seconds for up to 15 minutes (10 attempts).
+    attempt=0
+    max_attempts=10
+    while [ $attempt -lt $max_attempts ]; do
+      status_response=$(curl -s -k -H "Content-Type: application/json" \
+        -H "Authorization: Bearer ${BEARER_TOKEN}" \
+        "${ARIA_AUTOMATION_URL}/deployment/api/deployments/${deploymentId}")
+      
+      deployment_status=$(echo "$status_response" | jq -r '.status')
+      echo "Deployment status for ${deploymentId}: $deployment_status"
+      
+      if [ "$deployment_status" == "CREATE_SUCCESSFUL" ]; then
+         echo "Deployment ${deploymentId} completed successfully."
+         break
+      elif [ "$deployment_status" == "CREATE_FAILED" ]; then
+         echo "Deployment ${deploymentId} failed."
+         exit 1
+      else
+         echo "Deployment ${deploymentId} is still in progress. Waiting for 90 seconds..."
+         sleep 90
+         attempt=$((attempt + 1))
+      fi
+    done
+    
+    if [ $attempt -eq $max_attempts ]; then
+      echo "Deployment ${deploymentId} did not complete within the expected time."
+      exit 1
+    fi
   fi
 done
 
-echo "All deployments triggered successfully."
+echo "All deployments triggered and completed successfully."
