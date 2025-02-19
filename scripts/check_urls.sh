@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Define the CSV file location in the 'url_inputs' directory at the repository root.
-CSV_FILE="../url_inputs/urls.csv"
+CSV_FILE="./url_inputs/urls.csv"
 
 if [ ! -f "$CSV_FILE" ]; then
   echo "CSV file '$CSV_FILE' not found. Exiting."
