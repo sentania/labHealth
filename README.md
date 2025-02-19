@@ -40,7 +40,7 @@ Below is the recommended folder structure for the project:
 ├── docker-compose.yml        # Docker Compose file to run the self‑hosted runner.
 └── README.md                 # This file.```
 ## How It Works
-
+```
 1. **Authentication**  
    The script in `support_scripts/get_refresh_token.sh` obtains a refresh token using ARIA Automation credentials. This token is then used to generate a bearer token required for API requests.
 
