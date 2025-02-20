@@ -45,6 +45,6 @@ while IFS=, read -r fqdn expected_code search_text; do
       echo "FAILURE: Expected text '$search_text' NOT found in the response."
     fi
   fi
-done < "$CSV_FILE"
+done < <(tr -d '\r' < "$CSV_FILE")
 
 echo "URL checks completed."
