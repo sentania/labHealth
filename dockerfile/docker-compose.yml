@@ -6,13 +6,14 @@ services:
       context: .
       args:
         RUNNER_UID: 999   # Change this value to your desired UID
-    container_name: github-runner
+    container_name: github-runner-labhealth
     environment:
-      - REPO_URL=<REDACT>
-      - RUNNER_TOKEN=<REDACT>
+      - REPO_URL=<REDACTED>
+      - RUNNER_TOKEN=<REDACTED>
       - TZ=America/Chicago
     volumes:
-      - /var/docker/github-runner:/home/runner/
+      - /var/docker/github-runner-labhealth:/home/runner/
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     restart: always
+
