@@ -1,3 +1,6 @@
 https://operations.int.sentania.net,200,VMware Aria Operations Web UI
 https://vrops.int.sentania.net,200,VMware Aria Operations Web UI
 https://vcenter.int.sentania.net,200,VMware vSphere
+https://lab-vcf-w01-vc.int.sentania.net,200,VMware vSphere
+https://lab-vcf-m01-vc.int.sentania.net,200,VMware vSphere
+
